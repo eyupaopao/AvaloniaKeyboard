@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using RimeSharp;
 
 namespace AvaloniaKeyboard;
@@ -10,7 +11,9 @@ public static class RimeUtils
     {
         try
         {
-            Rime.Init(AppContext.BaseDirectory, Handel);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "swan/ipcas/client");     
+            
+            Rime.Init(path, Handel);
             IsEnable = true;
 
             return null;
