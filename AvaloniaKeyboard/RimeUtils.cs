@@ -6,13 +6,16 @@ namespace AvaloniaKeyboard;
 
 public static class RimeUtils
 {
-    public static bool IsEnable { get; private set; }
-    public static Exception? Init()
+    public static bool IsEnable
+    {
+        get; private set;
+    }
+    public static Exception? Init(string? path = null)
     {
         try
         {
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "swan/ipcas/client");     
-            
+            if (path == null)
+                path = AppContext.BaseDirectory;
             Rime.Init(path, Handel);
             IsEnable = true;
 
