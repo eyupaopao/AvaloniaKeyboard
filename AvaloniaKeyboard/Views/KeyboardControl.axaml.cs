@@ -422,16 +422,16 @@ public partial class KeyboardControl : TemplatedControl
 
     private static string PrintComposition(RimeComposition composition, out string input)
     {
-        string preedit = composition.preedit;
+        string preedit = composition.Preedit;
         if (preedit == null)
         {
             input = "";
             return "";
         }
-        int len = composition.length;
-        int start = composition.sel_start;
-        int end = composition.sel_end;
-        int cursor = composition.cursor_pos;
+        int len = composition.Length;
+        int start = composition.SelectStart;
+        int end = composition.SelectEnd;
+        int cursor = composition.CursorPos;
         var temp = Encoding.UTF8.GetBytes(preedit);
         using var list = new MemoryStream();
         using var list1 = new MemoryStream();
@@ -469,23 +469,23 @@ public partial class KeyboardControl : TemplatedControl
     private string PrintMenu(RimeMenu menu)
     {
         InputSelect.Children.Clear();
-        if (menu.num_candidates == 0)
+        if (menu.NumCandidates == 0)
         {
             return "";
         }
-        var page = $"{menu.page_no + 1} / {menu.page_size}  ";
-        _select = menu.highlighted_candidate_index;
-        _page = menu.page_no;
-        _maxPage = menu.page_size;
+        var page = $"{menu.PageNo + 1} / {menu.PageSize}  ";
+        _select = menu.HighlightedCandidateIndex;
+        _page = menu.PageNo;
+        _maxPage = menu.PageSize;
 
         var builder = new StringBuilder();
-        for (int i = 0; i < menu.num_candidates; ++i)
+        for (int i = 0; i < menu.NumCandidates; ++i)
         {
-            bool highlighted = i == menu.highlighted_candidate_index;
+            bool highlighted = i == menu.HighlightedCandidateIndex;
             var label = new Label()
             {
-                Content = $"{i + 1}. {(highlighted ? '[' : ' ')}{menu.candidates[i].text}" +
-                $"{(highlighted ? ']' : ' ')}{menu.candidates[i].comment ?? ""}",
+                Content = $"{i + 1}. {(highlighted ? '[' : ' ')}{menu.Candidates[i].Text}" +
+                $"{(highlighted ? ']' : ' ')}{menu.Candidates[i].Comment ?? ""}",
                 Background = Brush.Parse("#FAFAFA"),
                 BorderBrush = Brush.Parse("#EFEFEF"),
                 BorderThickness = new Thickness(1),
@@ -593,9 +593,9 @@ public partial class KeyboardControl : TemplatedControl
         }
         if (Rime.RimeGetContext(_session, out var res1) && res1 is { } context)
         {
-            if (context.composition.length > 0 || context.menu.num_candidates > 0)
+            if (context.Composition.Length > 0 || context.Menu.NumCandidates > 0)
             {
-                Input.Text = PrintComposition(context.composition, out _input);
+                Input.Text = PrintComposition(context.Composition, out _input);
             }
             else
             {
@@ -607,7 +607,7 @@ public partial class KeyboardControl : TemplatedControl
                 }
             }
 
-            InputPage.Text = PrintMenu(context.menu);
+            InputPage.Text = PrintMenu(context.Menu);
         }
         else
         {
